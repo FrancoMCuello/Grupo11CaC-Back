@@ -1,0 +1,11 @@
+{
+  "name": "grupo11cac-back",
+  "version": "1.0.0",
+  "description": "Proyecto Codo a Codo. Grupo 11. Back-end",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": " Franco, Miriam, Turco, Steven",
+  "license": "ISC"
+}
