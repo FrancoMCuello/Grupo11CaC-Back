@@ -5,7 +5,7 @@ app.use(express.json());
 
 const PORT = 3000;
 
-app.use("/productos", require("./routes/productos.routes"));
+app.use("/productos", require("./router/productos.router"));
 
 app.get("/", (req, res) => {
   res.json("Funciona");
