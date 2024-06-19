@@ -1,4 +1,5 @@
 const db = require("../db/db");
+const fs = require("fs");
 
 const getAllProduct = (req, res) => {
   const sql = "SELECT * FROM productos";
@@ -29,11 +30,18 @@ const getProduct = (req, res) => {
 };
 
 const createProduct = (req, res) => {
+  let imageName = "";
+
+  if (req.file) {
+    imageName = req.file.filename;
+  }
+
   const { nombre, precio, stock } = req.body;
 
-  const sql = "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)";
+  const sql =
+    "INSERT INTO productos (nombre, precio, stock, imagen) VALUES (?, ?, ?, ?)";
 
-  db.query(sql, [nombre, precio, stock], (error, result) => {
+  db.query(sql, [nombre, precio, stock, imageName], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });
     }
@@ -67,7 +75,23 @@ const updateProduct = (req, res) => {
 const deleteProduct = (req, res) => {
   const { id } = req.params;
 
-  const sql = "DELETE FROM productos WHERE id = ?";
+  let sql = "SELECT * FROM productos WHERE id = ?";
+  db.query(sql, [id], (error, rows) => {
+    if (error) {
+      return res.status(500).json({ error: "Intente mas tarde" });
+    }
+
+    if (rows.length == 0) {
+      return res.status(404).send({ error: "No existe ese producto" });
+    }
+
+    console.log(req.params.id);
+
+    res.json(rows);
+    fs.unlinkSync(path.resolve(__dirname, "../uploads/", rows[0].imagen));
+  });
+
+  sql = "DELETE FROM productos WHERE id = ?";
   db.query(sql, [id], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });
