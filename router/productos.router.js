@@ -1,66 +1,45 @@
 const express = require("express");
 const router = express.Router();
+const controller = require("../controllers/productos.controller");
+const multer = require("multer");
+const path = require("path");
 
-const productos = [{ id: 1, nombre: "Producto 1", stock: 10 }];
-
-router.get("/", (req, res) => {
-  res.json(productos);
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    console.log(file);
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
 });
 
-router.get("/:id", (req, res) => {
-  console.log(req.params.id);
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpg||jpeg||png/;
 
-  const producto = productos.find((elemento) => elemento.id === req.params.id);
-  if (!producto) {
-    return res.status(404).send({ error: "No existe ese producto" });
-  }
-  res.json(producto);
+    const minetype = fileTypes.test(file.mimetype);
+
+    const extname = fileTypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    if (mimetype && extname) {
+      cb(null, true);
+    }
+    cb("Error de archivo no soportado");
+  },
+  limits: { fileSize: 1024 * 1024 * 1 }, // 1 mb
 });
 
-router.post("/", (req, res) => {
-  console.log(req.body);
+router.get("/", controller.getAllProduct);
 
-  const producto = {
-    id: productos.length + 1,
-    nombre: req.body.nombre,
-    stock: req.body.stock,
-  };
+router.get("/:id", controller.getProduct);
 
-  productos.push(producto);
+router.post("/", upload.single("imagen"), controller.createProduct);
 
-  res.status(201).send(producto);
-});
+router.put("/:id", controller.updateProduct);
 
-router.put("/:id", (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
-
-  const producto = productos.find((elemento) => elemento.id === req.params.id);
-  if (!producto) {
-    return res.status(404).send({ error: "No existe ese producto" });
-  }
-
-  producto.nombre = req.body.nombre;
-  producto.stock = req.body.stock;
-
-  res.send(producto);
-});
-
-router.delete("/:id", (req, res) => {
-  console.log(req.params);
-
-  const producto = productos.find((elemento) => elemento.id === req.params.id);
-  if (!producto) {
-    return res.status(404).send({ error: "No existe ese producto" });
-  }
-
-  const productoIndex = productos.findIndex(
-    (elemento) => elemento.id === req.params.id
-  );
-
-  productos.splice(productoIndex, 1);
-
-  res.send(producto);
-});
+router.delete("/:id", controller.deleteProduct);
 
 module.exports = router;
