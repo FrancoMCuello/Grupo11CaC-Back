@@ -1,9 +1,16 @@
-const http = require('http');
+const express = require("express");
+const app = express();
 
-const server = http.createServer((req, res) => {
-    res.end('Prueba!');
-});
+
+app.use(express.json());
+
 
 const PORT = 3000;
 
-server.listen(PORT, () => console.log(`listening on port ${PORT}`));
+app.use("/productos", require("./router/productos.router"));
+
+app.get("/", (req, res) => {
+  res.json("Funciona");
+});
+
+app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
