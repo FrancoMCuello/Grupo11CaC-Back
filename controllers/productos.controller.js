@@ -38,8 +38,7 @@ const createProduct = (req, res) => {
  */
   const { nombre, precio, stock } = req.body;
 
-  const sql =
-    "INSERT INTO productos (nombre, precio, stock, imagen) VALUES (?, ?, ?, ?)";
+  const sql = "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)";
 
   db.query(sql, [nombre, precio, stock /* imageName */], (error, result) => {
     if (error) {
@@ -75,7 +74,7 @@ const updateProduct = (req, res) => {
 const deleteProduct = (req, res) => {
   const { id } = req.params;
 
-  let sql = "SELECT * FROM productos WHERE id = ?";
+  /*  let sql = "SELECT * FROM productos WHERE id = ?";
   db.query(sql, [id], (error, rows) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });
@@ -88,10 +87,10 @@ const deleteProduct = (req, res) => {
     console.log(req.params.id);
 
     res.json(rows);
-    fs.unlinkSync(path.resolve(__dirname, "../uploads/", rows[0].imagen));
-  });
+    fs.unlinkSync(path.resolve(__dirname, "../uploads/", rows[0].imagen)); 
+  }); */
 
-  sql = "DELETE FROM productos WHERE id = ?";
+  const sql = "DELETE FROM productos WHERE id = ?";
   db.query(sql, [id], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });

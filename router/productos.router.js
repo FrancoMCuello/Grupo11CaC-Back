@@ -4,7 +4,7 @@ const controller = require("../controllers/productos.controller");
 const multer = require("multer");
 const path = require("path");
 
-const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads");
   },
@@ -30,13 +30,13 @@ const upload = multer({
     cb("Error de archivo no soportado");
   },
   limits: { fileSize: 1024 * 1024 * 1 }, // 1 mb
-});
+}); */
 
 router.get("/", controller.getAllProduct);
 
 router.get("/:id", controller.getProduct);
 
-router.post("/", upload.single("imagen"), controller.createProduct);
+router.post("/", /*  upload.single("imagen"), */ controller.createProduct);
 
 router.put("/:id", controller.updateProduct);
 
