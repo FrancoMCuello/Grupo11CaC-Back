@@ -1,7 +1,7 @@
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-    res.end('Prueba2!');
+    res.end('Prueba!');
 });
 
 const PORT = 3000;
