@@ -30,18 +30,18 @@ const getProduct = (req, res) => {
 };
 
 const createProduct = (req, res) => {
-  let imageName = "";
+  /* let imageName = "";
 
   if (req.file) {
     imageName = req.file.filename;
   }
-
+ */
   const { nombre, precio, stock } = req.body;
 
   const sql =
     "INSERT INTO productos (nombre, precio, stock, imagen) VALUES (?, ?, ?, ?)";
 
-  db.query(sql, [nombre, precio, stock, imageName], (error, result) => {
+  db.query(sql, [nombre, precio, stock /* imageName */], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });
     }
