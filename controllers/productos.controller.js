@@ -1,20 +1,4 @@
 const db = require("../db/db");
-<<<<<<< HEAD
-
-const index = (req, res) => {
-    const sql = "SELECT * FROM Productos";
-    db.query(sql, (error, rows) => {
-        if (error) {
-            return res.status(500).json({error: "Intente mas tarde"});
-        }
-        res.json(productos);
-    });
-};
-
-module.exports = {
-    index,
-};
-=======
 const fs = require("fs");
 
 const getAllProduct = (req, res) => {
@@ -127,4 +111,3 @@ module.exports = {
   updateProduct,
   deleteProduct,
 };
->>>>>>> origin/develop
