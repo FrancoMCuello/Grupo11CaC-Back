@@ -30,22 +30,16 @@ const getProduct = (req, res) => {
 };
 
 const createProduct = (req, res) => {
-  /* let imageName = "";
-
-  if (req.file) {
-    imageName = req.file.filename;
-  }
- */
-  const { nombre, precio, stock } = req.body;
+  const { nombre, precio, stock, categoria_id } = req.body;
 
   const sql =
-    "INSERT INTO productos (nombre, precio, stock, imagen) VALUES (?, ?, ?, ?)";
+    "INSERT INTO productos (nombre, precio, stock, categoria_id) VALUES (?, ?, ?, ?)";
 
-  db.query(sql, [nombre, precio, stock /* imageName */], (error, result) => {
+  db.query(sql, [nombre, precio, stock, categoria_id], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });
     }
-    const producto = { ...req.body, id: result.insertId };
+    const producto = { ...req.body };
 
     res.status(201).send(producto);
   });
@@ -53,12 +47,12 @@ const createProduct = (req, res) => {
 
 const updateProduct = (req, res) => {
   const { id } = req.params;
-  const { nombre, precio, stock } = req.body;
+  const { nombre, precio, stock, categoria_id } = req.body;
 
   const sql =
-    "UPDATE productos SET nombre = ? precio = ? stock = ? WHERE id = ?";
+    "UPDATE productos SET nombre = ?, precio = ?, stock = ?, categoria_id = ? WHERE id = ?";
 
-  db.query(sql, [nombre, precio, stock, id], (error, result) => {
+  db.query(sql, [nombre, precio, stock, categoria_id, id], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });
     }
@@ -75,23 +69,8 @@ const updateProduct = (req, res) => {
 const deleteProduct = (req, res) => {
   const { id } = req.params;
 
-  let sql = "SELECT * FROM productos WHERE id = ?";
-  db.query(sql, [id], (error, rows) => {
-    if (error) {
-      return res.status(500).json({ error: "Intente mas tarde" });
-    }
+  const sql = "DELETE FROM productos WHERE id = ?";
 
-    if (rows.length == 0) {
-      return res.status(404).send({ error: "No existe ese producto" });
-    }
-
-    console.log(req.params.id);
-
-    res.json(rows);
-    fs.unlinkSync(path.resolve(__dirname, "../uploads/", rows[0].imagen));
-  });
-
-  sql = "DELETE FROM productos WHERE id = ?";
   db.query(sql, [id], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });

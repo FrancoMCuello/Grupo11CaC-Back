@@ -1,20 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/categorias.controller");
-const multer = require("multer");
-const path = require("path");
 
+router.get("/", controller.getAllCategories);
 
+router.get("/:id", controller.getCategory);
 
+router.post("/", controller.createCategory);
 
-router.get("/categorias", controller.getCategories);
+router.put("/:id", controller.updateCategory);
 
-router.get("/categorias:id", controller.getCategory);
-
-router.post("/categorias", upload.single("imagen"), controller.createCategory);
-
-router.put("/categorias:id", controller.updateCategory);
-
-router.delete("/categorias:id", controller.deleteCategory);
+router.delete("/:id", controller.deleteCategory);
 
 module.exports = router;

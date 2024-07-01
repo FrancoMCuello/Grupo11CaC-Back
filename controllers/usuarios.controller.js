@@ -2,101 +2,86 @@ const db = require("../db/db");
 const fs = require("fs");
 
 const getAllUsuarios = (req, res) => {
-    const sql = "SELECT * FROM usuarios";
-    db.query(sql, (error, rows) => {
-        if (error) {
-            return res.status(500).json({ error: "Intente mas tarde"});
-        }
-        res.json(rows);
-    });
+  const sql = "SELECT * FROM usuarios";
+  db.query(sql, (error, rows) => {
+    if (error) {
+      return res.status(500).json({ error: "Intente mas tarde" });
+    }
+    res.json(rows);
+  });
 };
 
 const getUsuario = (req, res) => {
-    const { id } = req.params;
-    const sql = "SELECT * FROM usuarios WHERE id = ?";
-    db.query(sql, [id], (error, rows) => {
-        if (error) {
-            return res.status(500).json({ error: "Intente mas tarde"});
-        }
-        if (rows.length == 0) {
-            return res.status(404).send({ error: "No existe ese usuario"})
-        }
+  const { id } = req.params;
+  const sql = "SELECT * FROM usuarios WHERE id = ?";
+  db.query(sql, [id], (error, rows) => {
+    if (error) {
+      return res.status(500).json({ error: "Intente mas tarde" });
+    }
+    if (rows.length == 0) {
+      return res.status(404).send({ error: "No existe ese usuario" });
+    }
 
-        console.log(req.params.id);
+    console.log(req.params.id);
 
-        res.json(rows);
-    });
+    res.json(rows);
+  });
 };
 
 const createUsuario = (req, res) => {
-    const { nombre, apellido } = req.body;
+  const { nombre, apellido } = req.body;
 
-    const sql = "INSERT INTO usuarios (nombre, apellido) VALUES (?,?)";
+  const sql = "INSERT INTO usuarios (nombre, apellido) VALUES (?,?)";
 
-    db.query(sql, [nombre, apellido], (error, result) => {
-        if (error) {
-            return res.status(500).json({ error: "Intente mas tarde"});
-        }
-        const usuario = { ...req.body, id:result.insertId};
+  db.query(sql, [nombre, apellido], (error, result) => {
+    if (error) {
+      return res.status(500).json({ error: "Intente mas tarde" });
+    }
+    const usuario = { ...req.body, id: result.insertId };
 
-        res.status(201).send(usuario);
-    });
+    res.status(201).send(usuario);
+  });
 };
 
 const updateUsuario = (req, res) => {
-    const { id } = req.params;
-    const  { nombre, apellido } = req.body;
+  const { id } = req.params;
+  const { nombre, apellido } = req.body;
 
-    const sql = "UPDATE usuarios SET nombre = ?, apellido = ? WHERE id = ?";
+  const sql = "UPDATE usuarios SET nombre = ?, apellido = ? WHERE id = ?";
 
-    db.query(sql, [nombre, apellido], (error, result) => {
-        if (error) {
-            return res.status(500).json({ error: "Intente mas tarde"});
-        }
-        if (result.affectedRows == 0) {
-            return res.status(404).send({ error: "No existe ese usuario"})
-        }
+  db.query(sql, [nombre, apellido, id], (error, result) => {
+    if (error) {
+      return res.status(500).json({ error: "Intente mas tarde" });
+    }
+    if (result.affectedRows == 0) {
+      return res.status(404).send({ error: "No existe ese usuario" });
+    }
 
-        const usuario = { ...req.body, ...req.params};
+    const usuario = { ...req.body, ...req.params };
 
-        res.json(usuario);
-    });
+    res.json(usuario);
+  });
 };
 
 const deleteUsuario = (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    let sql = "SELECT * FROM usuarios WHERE Id = ?";
-    db.query(sql, [id], (error, rows) => {
-        if (error) {
-            return res.status(500).json({ error: "Intente mas tarde"});
-        }
-
-        if (rows.length == 0) {
-            return res.status(404).send ({ error: "No existe ese usuario"})
-        }
-
-        console.log(req.params.id);
-
-        res.json(rows);   
-    });
-
-    sql = "DELETE FROM usuarios WHERE id = ?";
-    db.query(sql, [id], (error, result) => {
-        if (error) {
-            return res.status(500).json({ error: "Intente mas tarde"});
-        }
-        if (result.affectedRows == 0) {
-            return res.status(404).send({ error: "No existe ese usuario"})
-        }
-        res.json({ mensaje: "Usuario eliminado"});
-    });
+  const sql = "DELETE FROM usuarios WHERE id = ?";
+  db.query(sql, [id], (error, result) => {
+    if (error) {
+      return res.status(500).json({ error: "Intente mas tarde" });
+    }
+    if (result.affectedRows == 0) {
+      return res.status(404).send({ error: "No existe ese usuario" });
+    }
+    res.json({ mensaje: "Usuario eliminado" });
+  });
 };
 
 module.exports = {
-    getAllUsuarios,
-    getUsuario,
-    createUsuario,
-    updateUsuario,
-    deleteUsuario,
+  getAllUsuarios,
+  getUsuario,
+  createUsuario,
+  updateUsuario,
+  deleteUsuario,
 };

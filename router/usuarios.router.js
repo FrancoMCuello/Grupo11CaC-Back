@@ -1,20 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/usuarios.controller");
-const multer = require("multer");
-const path = require("path");
 
+router.get("/", controller.getAllUsuarios);
 
+router.get("/:id", controller.getUsuario);
 
+router.post("/", controller.createUsuario);
 
-router.get("/usuarios", controller.getUsuario);
+router.put("/:id", controller.updateUsuario);
 
-router.get("/usuarios:id", controller.getUsuario);
-
-router.post("/usuarios", upload.single("imagen"), controller.createUsuario);
-
-router.put("/usuarios:id", controller.updateUsuario);
-
-router.delete("/usuarios:id", controller.deleteUsuario);
+router.delete("/:id", controller.deleteUsuario);
 
 module.exports = router;
