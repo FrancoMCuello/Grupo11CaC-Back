@@ -29,11 +29,11 @@ const getUsuario = (req, res) => {
 };
 
 const createUsuario = (req, res) => {
-  const { nombre, apellido } = req.body;
+  const { nombre, apellido, admin } = req.body;
 
-  const sql = "INSERT INTO usuarios (nombre, apellido) VALUES (?,?)";
+  const sql = "INSERT INTO usuarios (nombre, apellido, admin) VALUES (?,?,?)";
 
-  db.query(sql, [nombre, apellido], (error, result) => {
+  db.query(sql, [nombre, apellido, admin], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });
     }
@@ -45,11 +45,12 @@ const createUsuario = (req, res) => {
 
 const updateUsuario = (req, res) => {
   const { id } = req.params;
-  const { nombre, apellido } = req.body;
+  const { nombre, apellido, admin } = req.body;
 
-  const sql = "UPDATE usuarios SET nombre = ?, apellido = ? WHERE id = ?";
+  const sql =
+    "UPDATE usuarios SET nombre = ?, apellido = ?, admin = ? WHERE id = ?";
 
-  db.query(sql, [nombre, apellido, id], (error, result) => {
+  db.query(sql, [nombre, apellido, admin, id], (error, result) => {
     if (error) {
       return res.status(500).json({ error: "Intente mas tarde" });
     }
