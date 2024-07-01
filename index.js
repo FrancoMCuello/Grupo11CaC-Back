@@ -10,7 +10,7 @@ app.use("/categorias", require("./router/categorias.router"));
 app.use("/usuarios", require("./router/usuarios.router"));
 
 app.get("/", (req, res) => {
-  res.json("Funciona");
+  res.json("Bienvenido a nuestra API. GRUPO 11");
 });
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
