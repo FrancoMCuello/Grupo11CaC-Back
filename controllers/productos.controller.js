@@ -30,12 +30,6 @@ const getProduct = (req, res) => {
 };
 
 const createProduct = (req, res) => {
-  /* let imageName = "";
-
-  if (req.file) {
-    imageName = req.file.filename;
-  }
- */
   const { nombre, precio, stock } = req.body;
 
   const sql =
