@@ -1,18 +1,18 @@
 const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
-    host: "mysql-francocuello.alwaysdata.net",
-    user: "366526_grupo11",
-    password: "Grupo11.CaC",
-    database: "francocuello_grupo11cac",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
 });
 
 connection.connect((error) => {
-    if (error) {
-        return console.log(error);
-    }
+  if (error) {
+    return console.log(error);
+  }
 
-    console.log("Conectado");
+  console.log("Conectado");
 });
 
 module.exports = connection;
